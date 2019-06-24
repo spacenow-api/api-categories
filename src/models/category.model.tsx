@@ -1,4 +1,4 @@
-import { Table, Column, Model, CreatedAt, UpdatedAt, IsUUID, PrimaryKey, AllowNull, Unique, Default, BeforeCreate, HasMany, ForeignKey, BelongsToMany } from 'sequelize-typescript';
+import { Table, Column, Model, CreatedAt, UpdatedAt, IsUUID, IsAlpha, PrimaryKey, AllowNull, Unique, Default, BeforeCreate, HasMany, ForeignKey } from 'sequelize-typescript';
 import uuidV4 from 'uuid/v4'
 
 @Table
@@ -10,6 +10,7 @@ export class Category extends Model<Category> {
   id!: string;
  
   @Unique
+  @IsAlpha
   @Column
   name!: string;
 
@@ -25,6 +26,10 @@ export class Category extends Model<Category> {
   @Default(0)
   @Column
   order!: number;
+
+  @Default(true)
+  @Column
+  isActive!: boolean;
 
   @CreatedAt
   @Column

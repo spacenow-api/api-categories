@@ -4,6 +4,7 @@ interface ICategory {
   slug: string;
   parentId: string;
   order: number;
+  isActive: boolean;
 }
 
 export default ICategory;

@@ -1,8 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import validationMiddleware from '../helpers/middlewares/validation-middleware';
 import sequelizeErrorMiddleware from '../helpers/middlewares/sequelize-error-middleware';
 import authMiddleware from '../helpers/middlewares/auth-middleware';
-import categoryDTO from './category.dto';
 import ICategory from './category.interface';
 import { Category } from '../models';
  
@@ -18,8 +16,8 @@ class CategoryController {
   private intializeRoutes() {
     this.router.get(this.path, this.getRootCategories);
     this.router.get(`${this.path}/:id`, this.getCategory);
-    this.router.post(this.path, authMiddleware, validationMiddleware(categoryDTO), this.createCategory);
-    this.router.patch(this.path, authMiddleware, validationMiddleware(categoryDTO, true), this.createCategory);
+    this.router.post(this.path, authMiddleware, this.createCategory);
+    this.router.patch(this.path, authMiddleware, this.createCategory);
   }
  
   private getRootCategories = async (request: Request, response: Response, next: NextFunction) => {
@@ -27,6 +25,7 @@ class CategoryController {
       const categories: ICategory[] = await Category.findAll({ where: {parentId: null} });
       response.send(categories);
     } catch (error) {
+      console.log(error)
       sequelizeErrorMiddleware(error, request, response, next);
     }
   }
