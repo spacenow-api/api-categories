@@ -1,5 +1,5 @@
 import App from './App';
-import CategoriesController from './categories/category.controller';
+import CategoriesController from './controllers/category.controller';
  
 const app = new App(
   [
