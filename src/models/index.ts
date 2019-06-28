@@ -1,19 +1,17 @@
-import { Sequelize } from 'sequelize-typescript';
-import * as config from '../config';
-import { Category } from './category.model'
+import { Sequelize } from "sequelize-typescript";
+import * as config from "../config";
+import { Category } from "./category.model";
 
 export const sequelize = new Sequelize({
-  host: config.dbEndpoint,
+  host: config.dbHost,
   database: config.dbSchema,
-  dialect: 'mysql',
+  dialect: "mysql",
   username: config.dbUsername,
   password: config.dbPassword,
   logging: false,
-  storage: ':memory:'
+  storage: ":memory:"
 });
 
-sequelize.addModels([
-  Category
-])
+sequelize.addModels([Category]);
 
-export { Category } from './category.model';
+export { Category } from "./category.model";
