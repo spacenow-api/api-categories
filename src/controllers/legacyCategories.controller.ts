@@ -2,7 +2,11 @@ import { Router, Request, Response, NextFunction } from 'express';
 
 import sequelizeErrorMiddleware from '../helpers/middlewares/sequelize-error-middleware';
 
-import { ListSettings, ListSettingsParent } from '../models';
+import {
+  ListSettings,
+  ListSettingsParent,
+  SubcategoryBookingPeriod
+} from '../models';
 
 const REFERENCE_CATEGORIES_ID: number = 111;
 
@@ -18,7 +22,7 @@ class LegacyCategoriesController {
      * Get list settings by listing id.
      */
     this.router.get(
-      `/legacy/categories/fetch`,
+      `/legacy/categories`,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const categories = await ListSettings.findAll({
@@ -60,14 +64,21 @@ class LegacyCategoriesController {
 
   private async fetchSubCategories(
     subCategories: Array<ListSettingsParent>
-  ): Promise<ListSettings[]> {
-    const subCategoriesData: Array<ListSettings> = [];
+  ): Promise<any[]> {
+    const subCategoriesData: Array<any> = [];
     for (const subCategory of subCategories) {
-      const subObj = await ListSettings.findOne({
+      const subObj: ListSettings = await ListSettings.findOne({
         where: { id: subCategory.listSettingsChildId },
         raw: true
       });
-      subCategoriesData.push(subObj);
+      const bookingPeriodObj = await SubcategoryBookingPeriod.findOne({
+        where: { listSettingsParentId: subCategory.id },
+        raw: true
+      });
+      subCategoriesData.push({
+        ...subObj,
+        bookingPeriod: bookingPeriodObj
+      });
     }
     return subCategoriesData;
   }
