@@ -7,8 +7,7 @@ import {
   UpdatedAt,
   PrimaryKey,
   AllowNull,
-  Default,
-  DataType
+  Default
 } from 'sequelize-typescript';
 
 @Table({

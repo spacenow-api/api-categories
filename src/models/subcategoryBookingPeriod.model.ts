@@ -1,6 +1,7 @@
 import {
   Table,
   Column,
+  AutoIncrement,
   Model,
   CreatedAt,
   UpdatedAt,
@@ -10,22 +11,34 @@ import {
 } from 'sequelize-typescript';
 
 @Table({
-  tableName: 'ListSettingsParent'
+  tableName: 'SubcategoryBookingPeriod'
 })
-export class ListSettingsParent extends Model<ListSettingsParent> {
+export class SubcategoryBookingPeriod extends Model<SubcategoryBookingPeriod> {
   @PrimaryKey
+  @AutoIncrement
   @AllowNull(false)
   @Column
   id!: number;
 
-  @Default('0')
   @AllowNull(false)
   @Column
   listSettingsParentId!: number;
 
-  @AllowNull(false)
+  @Default(0)
   @Column
-  listSettingsChildId!: number;
+  monthly?: number;
+
+  @Default(0)
+  @Column
+  weekly?: number;
+
+  @Default(0)
+  @Column
+  daily?: number;
+
+  @Default(0)
+  @Column
+  hourly?: number;
 
   @CreatedAt
   @AllowNull(false)
