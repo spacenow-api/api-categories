@@ -1,5 +1,7 @@
 import { Category } from './category.model';
+import { ListSettings } from './listSettings.model';
+import { ListSettingsParent } from './listSettingsParent.model';
 
-export { Category };
+export { Category, ListSettings, ListSettingsParent };
 
-export const arrayOfModels = [Category];
+export const arrayOfModels = [Category, ListSettings, ListSettingsParent];
