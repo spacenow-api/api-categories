@@ -2,9 +2,10 @@ import { Router, Request, Response, NextFunction } from 'express';
 
 import sequelizeErrorMiddleware from '../helpers/middlewares/sequelize-error-middleware';
 import authMiddleware from '../helpers/middlewares/auth-middleware';
-import ICategory from './category.interface';
 
 import { Category } from '../models';
+
+import { ICategory } from '../interfaces/category.interface';
 
 class CategoryController {
   public path = '/categories';

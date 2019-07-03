@@ -1,14 +1,29 @@
-import { Table, Column, Model, CreatedAt, UpdatedAt, IsUUID, IsAlpha, PrimaryKey, AllowNull, Unique, Default, BeforeCreate, HasMany, ForeignKey } from 'sequelize-typescript';
-import uuidV4 from 'uuid/v4'
+import {
+  Table,
+  Column,
+  Model,
+  CreatedAt,
+  UpdatedAt,
+  IsUUID,
+  IsAlpha,
+  PrimaryKey,
+  AllowNull,
+  Unique,
+  Default,
+  BeforeCreate,
+  HasMany,
+  ForeignKey
+} from 'sequelize-typescript';
+
+import uuidV4 from 'uuid/v4';
 
 @Table
 export class Category extends Model<Category> {
- 
   @IsUUID(4)
   @PrimaryKey
   @Column
   id!: string;
- 
+
   @Unique
   @IsAlpha
   @Column
@@ -40,7 +55,7 @@ export class Category extends Model<Category> {
   updatedAt!: Date;
 
   @HasMany(() => Category, 'parentId')
-  children: Category[] | undefined
+  children: Category[] | undefined;
 
   @BeforeCreate
   static async generateId(instance: Category) {
@@ -52,14 +67,15 @@ export class Category extends Model<Category> {
     const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
     const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
     const p = new RegExp(a.split('').join('|'), 'g');
-    instance.slug = instance.name.toString().toLowerCase()
+    instance.slug = instance.name
+      .toString()
+      .toLowerCase()
       .replace(/\s+/g, '-')
       .replace(p, c => b.charAt(a.indexOf(c)))
       .replace(/&/g, '-and-')
       .replace(/[^\w\-]+/g, '')
       .replace(/\-\-+/g, '-')
       .replace(/^-+/, '')
-      .replace(/-+$/, '')
-  };
- 
+      .replace(/-+$/, '');
+  }
 }

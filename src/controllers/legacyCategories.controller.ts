@@ -7,6 +7,8 @@ import LegacyCategoriesService from '../services/legacyCategories.service';
 
 import { ListSettings } from '../models';
 
+import { ICategoryLegacy } from '../interfaces/category.interface';
+
 const REFERENCE_CATEGORIES_ID: number = 111;
 
 class LegacyCategoriesController {
@@ -32,9 +34,9 @@ class LegacyCategoriesController {
               where: { typeId: REFERENCE_CATEGORIES_ID },
               raw: true
             });
-            const categoriesTree = await this.service.fetchCategories(0, categories, []);
+            const categoriesTree: Array<ICategoryLegacy> = await this.service.fetchCategories(0, categories, []);
             console.debug(`New Category cache defined: ${key}`);
-            memoryCache.put(key, categoriesTree, 1 * 3.6e+6); // Expire in 1 hour.
+            memoryCache.put(key, categoriesTree, 1 * 3.6e6); // Expire in 1 hour.
             res.send(categoriesTree);
           } catch (error) {
             sequelizeErrorMiddleware(error, req, res, next);

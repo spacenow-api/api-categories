@@ -4,12 +4,17 @@ import {
   SubcategoryBookingPeriod
 } from './../models';
 
+import {
+  ICategoryLegacy,
+  ISubCategoryLegacy
+} from '../interfaces/category.interface';
+
 class LegacyCategoriesService {
   public async fetchCategories(
     index: number,
-    categories: Array<ListSettings>,
-    tree: Array<any>
-  ): Promise<any> {
+    categories: Array<ICategoryLegacy>,
+    tree: Array<ICategoryLegacy>
+  ): Promise<Array<ICategoryLegacy>> {
     const reference = Array.from(tree);
     if (index < categories.length) {
       const category = categories[index];
@@ -19,10 +24,8 @@ class LegacyCategoriesService {
       });
       const subReference = await this.fetchSubCategories(subCategories);
       reference.push({
-        category: {
-          ...category,
-          subCategories: [...subReference]
-        }
+        ...category,
+        subCategories: [...subReference]
       });
       return this.fetchCategories(++index, categories, reference);
     }
@@ -31,10 +34,10 @@ class LegacyCategoriesService {
 
   private async fetchSubCategories(
     subCategories: Array<ListSettingsParent>
-  ): Promise<any[]> {
-    const subCategoriesData: Array<any> = [];
+  ): Promise<Array<ISubCategoryLegacy>> {
+    const subCategoriesData: Array<ISubCategoryLegacy> = [];
     for (const subCategory of subCategories) {
-      const subObj: ListSettings = await ListSettings.findOne({
+      const subObj = await ListSettings.findOne({
         where: { id: subCategory.listSettingsChildId },
         raw: true
       });
