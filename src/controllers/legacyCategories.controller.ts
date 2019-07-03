@@ -20,7 +20,7 @@ class LegacyCategoriesController {
 
   private intializeRoutes() {
     this.router.get(
-      `/legacy/categories`,
+      `/categories/legacy`,
       async (req: Request, res: Response, next: NextFunction) => {
         const key = '__categories__' + req.originalUrl || req.url;
         const cachedResponse = memoryCache.get(key);
