@@ -2,12 +2,12 @@ import {
   ListSettings,
   ListSettingsParent,
   SubcategoryBookingPeriod
-} from './../models';
+} from "./../models";
 
 import {
   ICategoryLegacy,
   ISubCategoryLegacy
-} from '../interfaces/category.interface';
+} from "../interfaces/category.interface";
 
 class LegacyCategoriesService {
   public async fetchCategories(
@@ -35,7 +35,7 @@ class LegacyCategoriesService {
   private async fetchSubCategories(
     subCategories: Array<ListSettingsParent>
   ): Promise<Array<ISubCategoryLegacy>> {
-    const subCategoriesData: Array<ISubCategoryLegacy> = [];
+    const subCategoriesData: Array<any> = [];
     for (const subCategory of subCategories) {
       const subObj = await ListSettings.findOne({
         where: { id: subCategory.listSettingsChildId },
@@ -45,10 +45,11 @@ class LegacyCategoriesService {
         where: { listSettingsParentId: subCategory.id },
         raw: true
       });
-      subCategoriesData.push({
-        ...subObj,
-        bookingPeriod: bookingPeriodObj
-      });
+      if (bookingPeriodObj)
+        subCategoriesData.push({
+          ...subObj,
+          bookingPeriod: bookingPeriodObj
+        });
     }
     return subCategoriesData;
   }

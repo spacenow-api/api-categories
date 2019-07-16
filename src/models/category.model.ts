@@ -13,9 +13,9 @@ import {
   BeforeCreate,
   HasMany,
   ForeignKey
-} from 'sequelize-typescript';
+} from "sequelize-typescript";
 
-import uuidV4 from 'uuid/v4';
+import uuidV4 from "uuid/v4";
 
 @Table
 export class Category extends Model<Category> {
@@ -54,7 +54,7 @@ export class Category extends Model<Category> {
   @Column
   updatedAt!: Date;
 
-  @HasMany(() => Category, 'parentId')
+  @HasMany(() => Category, "parentId")
   children: Category[] | undefined;
 
   @BeforeCreate
@@ -64,18 +64,18 @@ export class Category extends Model<Category> {
 
   @BeforeCreate
   static async generateSlug(instance: Category) {
-    const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
-    const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
-    const p = new RegExp(a.split('').join('|'), 'g');
+    const a = "àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;";
+    const b = "aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------";
+    const p = new RegExp(a.split("").join("|"), "g");
     instance.slug = instance.name
       .toString()
       .toLowerCase()
-      .replace(/\s+/g, '-')
+      .replace(/\s+/g, "-")
       .replace(p, c => b.charAt(a.indexOf(c)))
-      .replace(/&/g, '-and-')
-      .replace(/[^\w\-]+/g, '')
-      .replace(/\-\-+/g, '-')
-      .replace(/^-+/, '')
-      .replace(/-+$/, '');
+      .replace(/&/g, "-and-")
+      .replace(/[^\w\-]+/g, "")
+      .replace(/\-\-+/g, "-")
+      .replace(/^-+/, "")
+      .replace(/-+$/, "");
   }
 }

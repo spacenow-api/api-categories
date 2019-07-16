@@ -1,14 +1,14 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction } from "express";
 
-import sequelizeErrorMiddleware from '../helpers/middlewares/sequelize-error-middleware';
-import authMiddleware from '../helpers/middlewares/auth-middleware';
+import sequelizeErrorMiddleware from "../helpers/middlewares/sequelize-error-middleware";
+import authMiddleware from "../helpers/middlewares/auth-middleware";
 
-import { Category } from '../models';
+import { Category } from "../models";
 
-import { ICategory } from '../interfaces/category.interface';
+import { ICategory } from "../interfaces/category.interface";
 
 class CategoryController {
-  public path = '/categories';
+  public path = "/categories";
   public router = Router();
 
   constructor() {
@@ -28,7 +28,7 @@ class CategoryController {
     next: NextFunction
   ) => {
     try {
-      const categories: ICategory[] = await Category.findAll({
+      const categories: Category[] = await Category.findAll({
         where: { parentId: null }
       });
       response.send(categories);
@@ -43,9 +43,9 @@ class CategoryController {
     next: NextFunction
   ) => {
     try {
-      const category: ICategory = await Category.findOne({
+      const category: Category | null = await Category.findOne({
         where: { id: request.params.id },
-        include: [{ model: Category, as: 'children' }]
+        include: [{ model: Category, as: "children" }]
       });
       response.send(category);
     } catch (error) {

@@ -34,11 +34,12 @@ class LegacyCategoriesService {
                     where: { id: subCategory.listSettingsChildId },
                     raw: true
                 });
-                const bookingPeriod = yield models_1.SubcategoryBookingPeriod.findOne({
+                const bookingPeriodObj = yield models_1.SubcategoryBookingPeriod.findOne({
                     where: { listSettingsParentId: subCategory.id },
                     raw: true
                 });
-                subCategoriesData.push(Object.assign({}, subObj, { bookingPeriod }));
+                if (bookingPeriodObj)
+                    subCategoriesData.push(Object.assign({}, subObj, { bookingPeriod: bookingPeriodObj }));
             }
             return subCategoriesData;
         });

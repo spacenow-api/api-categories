@@ -1,13 +1,13 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import memoryCache from 'memory-cache';
+import { Router, Request, Response, NextFunction } from "express";
+import memoryCache from "memory-cache";
 
-import sequelizeErrorMiddleware from '../helpers/middlewares/sequelize-error-middleware';
+import sequelizeErrorMiddleware from "../helpers/middlewares/sequelize-error-middleware";
 
-import LegacyCategoriesService from '../services/legacyCategories.service';
+import LegacyCategoriesService from "../services/legacyCategories.service";
 
-import { ListSettings } from '../models';
+import { ListSettings } from "../models";
 
-import { ICategoryLegacy } from '../interfaces/category.interface';
+import { ICategoryLegacy } from "../interfaces/category.interface";
 
 const REFERENCE_CATEGORIES_ID: number = 111;
 
@@ -24,17 +24,19 @@ class LegacyCategoriesController {
     this.router.get(
       `/categories/legacy`,
       async (req: Request, res: Response, next: NextFunction) => {
-        const key = '__categories__' + req.originalUrl || req.url;
+        const key = "__categories__" + req.originalUrl || req.url;
         const cachedResponse = memoryCache.get(key);
         if (cachedResponse) {
           res.send(cachedResponse);
         } else {
           try {
-            const categories = await ListSettings.findAll({
+            const categories: any = await ListSettings.findAll({
               where: { typeId: REFERENCE_CATEGORIES_ID },
               raw: true
             });
-            const categoriesTree: Array<ICategoryLegacy> = await this.service.fetchCategories(0, categories, []);
+            const categoriesTree: Array<
+              ICategoryLegacy
+            > = await this.service.fetchCategories(0, categories, []);
             console.debug(`New Category cache defined: ${key}`);
             memoryCache.put(key, categoriesTree, 1 * 3.6e6); // Expire in 1 hour.
             res.send(categoriesTree);

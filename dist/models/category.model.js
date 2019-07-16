@@ -32,19 +32,19 @@ let Category = Category_1 = class Category extends sequelize_typescript_1.Model 
     }
     static generateSlug(instance) {
         return __awaiter(this, void 0, void 0, function* () {
-            const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
-            const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
-            const p = new RegExp(a.split('').join('|'), 'g');
+            const a = "àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;";
+            const b = "aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------";
+            const p = new RegExp(a.split("").join("|"), "g");
             instance.slug = instance.name
                 .toString()
                 .toLowerCase()
-                .replace(/\s+/g, '-')
+                .replace(/\s+/g, "-")
                 .replace(p, c => b.charAt(a.indexOf(c)))
-                .replace(/&/g, '-and-')
-                .replace(/[^\w\-]+/g, '')
-                .replace(/\-\-+/g, '-')
-                .replace(/^-+/, '')
-                .replace(/-+$/, '');
+                .replace(/&/g, "-and-")
+                .replace(/[^\w\-]+/g, "")
+                .replace(/\-\-+/g, "-")
+                .replace(/^-+/, "")
+                .replace(/-+$/, "");
         });
     }
 };
@@ -92,7 +92,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Category.prototype, "updatedAt", void 0);
 __decorate([
-    sequelize_typescript_1.HasMany(() => Category_1, 'parentId'),
+    sequelize_typescript_1.HasMany(() => Category_1, "parentId"),
     __metadata("design:type", Object)
 ], Category.prototype, "children", void 0);
 __decorate([
