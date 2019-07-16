@@ -10,18 +10,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const axios_1 = __importDefault(require("axios"));
 const AuthenticationTokenMissingException_1 = __importDefault(require("../exceptions/AuthenticationTokenMissingException"));
 const WrongAuthenticationTokenException_1 = __importDefault(require("../exceptions/WrongAuthenticationTokenException"));
 const token_1 = __importDefault(require("../utils/token"));
-function authMiddleware(request, response, next) {
+const config = __importStar(require("./../../config"));
+const fetchUserById = (id) => __awaiter(this, void 0, void 0, function* () {
+    const res = yield axios_1.default.get(`${config.USERS_AUTHENTICATION_API_HOST}/users/legancy/${id}`);
+    if (res && res.data) {
+        const userData = res.data;
+        return Promise.resolve(userData.email);
+    }
+    return Promise.reject();
+});
+function authMiddleware(req, _, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const token = new token_1.default().getToken(request);
-        if (token) {
+        const token = token_1.default.get(req);
+        if (token && token !== 'undefined') {
             const secret = process.env.JWT_SECRET || 'Spacenow';
             try {
-                yield jsonwebtoken_1.default.verify(token, secret);
+                const { id } = yield jsonwebtoken_1.default.verify(token, secret);
+                const email = yield fetchUserById(id);
+                console.debug(`User ${email} verified.`);
+                req.userIdDecoded = id;
                 next();
             }
             catch (error) {

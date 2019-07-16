@@ -16,3 +16,4 @@ exports.dbSchema = process.env.DATABASE_SCHEMA;
 exports.dbUsername = process.env.DATABASE_USERNAME;
 exports.dbPassword = process.env.DATABASE_PASSWORD;
 exports.dbHost = process.env.DATABASE_HOST;
+exports.USERS_AUTHENTICATION_API_HOST = process.env.USERS_API_HOST || "http://localhost:6001";
