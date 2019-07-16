@@ -27,7 +27,7 @@ fi
 set -eo pipefail
 # region=ap-southeast-2
 region=$1
-stack_name=$(echo "$2-SPACENOW-API-USERS-${4:-master}" | tr '[:lower:]' '[:upper:]')
+stack_name=$(echo "$2-SPACENOW-API-CATEGORIES-${4:-master}" | tr '[:lower:]' '[:upper:]')
 HostedZoneName=$(echo "$2.cloud.spacenow.com" | tr '[:upper:]' '[:lower:]')
 
 # get ssm parameters from env
@@ -61,7 +61,7 @@ echo -e "\nStack does not exist, creating ..."
     --region $region \
     --stack-name $stack_name \
     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
-    --template-body file:///$PWD/scripts/spacenow-api-users-cf.yml \
+    --template-body file:///$PWD/scripts/spacenow-api-categories-cf.yml \
     --parameters $CF_PARAMS \
 
 echo "Waiting for stack to be created ..."
@@ -76,7 +76,7 @@ echo -e "\nStack exists, attempting update ..."
     --region $region \
     --stack-name $stack_name \
     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
-    --template-body=file:///$PWD/scripts/spacenow-api-users-cf.yml \
+    --template-body=file:///$PWD/scripts/spacenow-api-categories-cf.yml \
     --parameters $CF_PARAMS  2>&1)
   status=$?
   set -e
