@@ -1,13 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import memoryCache from "memory-cache";
 
-import sequelizeErrorMiddleware from "../helpers/middlewares/sequelize-error-middleware";
+import sequelizeErrorMiddleware from "../../helpers/middlewares/sequelize-error-middleware";
 
-import LegacyCategoriesService from "../services/legacyCategories.service";
+import LegacyCategoriesService from "../../services/legacyCategories.service";
 
-import { ListSettings } from "../models";
+import { ListSettings } from "../../models";
 
-import { ICategoryLegacy } from "../interfaces/category.interface";
+import { ICategoryLegacy } from "../../interfaces/category.interface";
 
 const REFERENCE_CATEGORIES_ID: number = 111;
 
