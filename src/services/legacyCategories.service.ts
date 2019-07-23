@@ -10,11 +10,8 @@ import {
 } from "../interfaces/category.interface";
 
 class LegacyCategoriesService {
-  public async fetchCategories(
-    index: number,
-    categories: Array<ICategoryLegacy>,
-    tree: Array<ICategoryLegacy>
-  ): Promise<Array<ICategoryLegacy>> {
+
+  public async fetchCategories(index: number, categories: Array<ICategoryLegacy>, tree: Array<ICategoryLegacy>): Promise<Array<ICategoryLegacy>> {
     const reference = Array.from(tree);
     if (index < categories.length) {
       const category = categories[index];
@@ -32,9 +29,7 @@ class LegacyCategoriesService {
     return reference;
   }
 
-  private async fetchSubCategories(
-    subCategories: Array<ListSettingsParent>
-  ): Promise<Array<ISubCategoryLegacy>> {
+  private async fetchSubCategories(subCategories: Array<ListSettingsParent>): Promise<Array<ISubCategoryLegacy>> {
     const subCategoriesData: Array<any> = [];
     for (const subCategory of subCategories) {
       const subObj = await ListSettings.findOne({
