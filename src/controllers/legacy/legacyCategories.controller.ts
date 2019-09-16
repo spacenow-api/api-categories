@@ -23,23 +23,33 @@ class LegacyCategoriesController {
 
   private intializeRoutes() {
     this.router.get(`/categories/legacy`, authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-      const key = "__categories__" + req.originalUrl || req.url;
-      const cachedResponse = memoryCache.get(key);
-      if (cachedResponse) {
-        res.send(cachedResponse);
-      } else {
-        try {
-          const categories: any = await ListSettings.findAll({
-            where: { typeId: REFERENCE_CATEGORIES_ID },
-            raw: true
-          });
-          const categoriesTree: Array<ICategoryLegacy> = await this.service.fetchCategories(0, categories, []);
-          console.debug(`New Category cache defined: ${key}`);
-          memoryCache.put(key, categoriesTree, 1 * 3.6e6); // Expire in 1 hour.
-          res.send(categoriesTree);
-        } catch (error) {
-          sequelizeErrorMiddleware(error, req, res, next);
-        }
+      // const key = "__categories__" + req.originalUrl || req.url;
+      // const cachedResponse = memoryCache.get(key);
+      // if (cachedResponse) {
+      //   res.send(cachedResponse);
+      // } else {
+      //   try {
+      //     const categories: any = await ListSettings.findAll({
+      //       where: { typeId: REFERENCE_CATEGORIES_ID },
+      //       raw: true
+      //     });
+      //     const categoriesTree: Array<ICategoryLegacy> = await this.service.fetchCategories(0, categories, []);
+      //     console.debug(`New Category cache defined: ${key}`);
+      //     memoryCache.put(key, categoriesTree, 1 * 3.6e6); // Expire in 1 hour.
+      //     res.send(categoriesTree);
+      //   } catch (error) {
+      //     sequelizeErrorMiddleware(error, req, res, next);
+      //   }
+      // }
+      try {
+        const categories: any = await ListSettings.findAll({
+          where: { typeId: REFERENCE_CATEGORIES_ID },
+          raw: true
+        });
+        const categoriesTree: Array<ICategoryLegacy> = await this.service.fetchCategories(0, categories, []);
+        res.send(categoriesTree)
+      } catch (err) {
+        sequelizeErrorMiddleware(err, req, res, next);
       }
     });
   }
