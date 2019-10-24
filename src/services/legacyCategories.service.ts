@@ -40,11 +40,12 @@ class LegacyCategoriesService {
         where: { listSettingsParentId: subCategory.id },
         raw: true
       });
-      if (bookingPeriodObj)
+      if (bookingPeriodObj) {
         subCategoriesData.push({
           ...subObj,
           bookingPeriod: bookingPeriodObj
         });
+      }
     }
     return subCategoriesData;
   }
