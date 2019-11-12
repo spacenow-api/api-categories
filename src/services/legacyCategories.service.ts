@@ -42,6 +42,7 @@ class LegacyCategoriesService {
       });
       if (bookingPeriodObj) {
         subCategoriesData.push({
+          listSettingsParentId: subCategory.id,
           ...subObj,
           bookingPeriod: bookingPeriodObj
         });
