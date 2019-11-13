@@ -24,4 +24,5 @@ COPY --from=first-stage /app ./
 
 EXPOSE 6003
 
-CMD ["yarn", "prod"]
+RUN npm install pm2 -g
+CMD [ "pm2-runtime", "npm", "--", "start" ]
